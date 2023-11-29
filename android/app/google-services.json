@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "73619817305",
+    "firebase_url": "https://my-flutterproject-quiz-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "my-flutterproject-quiz",
+    "storage_bucket": "my-flutterproject-quiz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73619817305:android:b55d7b7a19f7165acc8248",
+        "android_client_info": {
+          "package_name": "com.luminar.quiz.quiz_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtDloVNoPsIBsxDP1svx_pF-sH1K2iofo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
