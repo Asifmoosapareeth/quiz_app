@@ -1,40 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/Database/database_connetion.dart';
-import 'package:quiz_app/Widgets/next%20button.dart';
 import 'package:quiz_app/Widgets/option_card.dart';
 import 'package:quiz_app/Widgets/question_widgets.dart';
-import 'package:quiz_app/Constants/constants.dart';
 import '../Model/model class.dart';
+import '../Widgets/next_button.dart';
 import '../Widgets/resultbox.dart';
+
 class QuestionPage extends StatefulWidget {
-  final Categoryname categoryname;
-  const QuestionPage({Key? key, required this.categoryname}) : super(key: key);
+  final String categoryName;
+
+  const QuestionPage({Key? key, required this.categoryName}) : super(key: key);
 
   @override
   State<QuestionPage> createState() => _QuestionPageState();
 }
 
 class _QuestionPageState extends State<QuestionPage> {
+  var db = Dbconnect();
+  late Future _questions;
 
-var db= Dbconnect();
+  Future<List<Question>> getData() async {
+    return db.fetchQuestions(widget.categoryName);
+  }
 
-late Future _questions;
-
-Future<List<Question>>getData()async{
-  return db.fetchQuestions(widget.categoryname.name);
-}
-
-@override
-void initState(){
-  _questions=getData();
-  super.initState();
-}
-
+  @override
+  void initState() {
+    super.initState();
+    _questions = getData();
+  }
 
   int index = 0;
-  int mark=0;
-  bool ispressed=false;
-  bool isAlreadySelected=false;
+  int mark = 0;
+  bool ispressed = false;
+  bool isAlreadySelected = false;
 
   void checkAnswer(bool value){
     if(isAlreadySelected){
@@ -50,64 +48,76 @@ void initState(){
       }
     }
   }
-  void startOver(){
+
+  void startOver() {
     setState(() {
-      index=0;
-      mark=0;
-      ispressed=false;
-      isAlreadySelected=false;
+      index = 0;
+      mark = 0;
+      ispressed = false;
+      isAlreadySelected = false;
     });
 
     Navigator.pop(context);
-
   }
-  void nextQuestion(int totalQuestion){
-    if(index==totalQuestion-1){
-      showDialog(context: context,
-          barrierDismissible: false,
-          builder: (ctx)=>ResultBox(
-        mark: mark,
-            total_question: totalQuestion,
-            onPressed: startOver,));
 
-    }else {
-      if(ispressed){
+  void nextQuestion(int totalQuestion) {
+    if (index == totalQuestion - 1) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (ctx) => ResultBox(
+          mark: mark,
+          total_question: totalQuestion,
+          onPressed: startOver,
+        ),
+      );
+    } else {
+      if (ispressed) {
         setState(() {
           index++;
-          ispressed=false;
-          isAlreadySelected=false;
+          ispressed = false;
+          isAlreadySelected = false;
         });
-      }else{
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              behavior: SnackBarBehavior.floating,
-                backgroundColor: Colors.red,
-                content: Text('Select an option')));
+          const SnackBar(
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.red,
+            content: Text('Select an option'),
+          ),
+        );
       }
-
     }
   }
-@override
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: _questions as Future<List<Question>>,
-      builder: (ctx,snapshot){
-        if(snapshot.connectionState==ConnectionState.done){
-          if(snapshot.hasError){
-            return Center(child: Text('${snapshot.error}'),);
-          }else if(snapshot.hasData){
+      builder: (ctx, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('${snapshot.error}'),
+            );
+          } else if (snapshot.hasData) {
             var extractedData = snapshot.data as List<Question>;
             return Scaffold(
-              backgroundColor: background,
+              backgroundColor: Colors.white,
               appBar: AppBar(
-                backgroundColor: background,
+                backgroundColor: Colors.blue,
                 shadowColor: Colors.transparent,
-                title: const Text('Quiz App',
-                  style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+                title: const Text(
+                  'Quiz App',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
                 actions: [
                   Padding(
-                    padding: const EdgeInsets.only(right: 25,top: 15),
-                    child: Text('Mark : $mark',style: const TextStyle(fontSize: 18),),
+                    padding: const EdgeInsets.only(right: 25, top: 15),
+                    child: Text(
+                      'Mark : $mark',
+                      style: const TextStyle(fontSize: 18),
+                    ),
                   )
                 ],
               ),
@@ -116,27 +126,26 @@ void initState(){
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   children: [
-
                     const SizedBox(height: 20,),
                     QuestionWidget(Question: extractedData[index].title, index: index),
                     const SizedBox(height: 80,),
-                    for(int i=0; i<extractedData[index].options.length;i++)
-
+                    for (int i = 0; i < extractedData[index].options.length; i++)
                       GestureDetector(
-                        onTap:()=>checkAnswer(extractedData[index].options.values.toList()[i]),
+                        onTap: () => checkAnswer(extractedData[index].options.values.toList()[i]),
                         child: OptionCard(
                           option: extractedData[index].options.keys.toList()[i],
-                          color: ispressed ?
-                          extractedData[index].options.values.toList()[i]==true?
-                          correct:incorrect
-                              :nuetral,
+                          color: ispressed
+                              ? extractedData[index].options.values.toList()[i] == true
+                              ? Colors.green
+                              : Colors.red
+                              : Colors.grey,
                         ),
-                      )
+                      ),
                   ],
                 ),
               ),
               floatingActionButton: GestureDetector(
-                onTap: ()=> nextQuestion(extractedData.length),
+                onTap: () => nextQuestion(extractedData.length),
                 child: const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: NextButton(),
@@ -144,21 +153,21 @@ void initState(){
               ),
               floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
             );
-          }else{
+          } else {
             return const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-               crossAxisAlignment: CrossAxisAlignment.center,
-               children: [
-                 CircularProgressIndicator(),
-                 SizedBox(height: 30,),
-                 Text('Loading..',style: TextStyle(fontSize: 18,color:Colors.green),)
-               ],
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 30,),
+                  Text('Loading..', style: TextStyle(fontSize: 18, color: Colors.green),),
+                ],
               ),
             );
           }
         }
-        return const Center(child: Text('no DAta'),);
+        return const Center(child: CircularProgressIndicator(),);
       },
     );
   }

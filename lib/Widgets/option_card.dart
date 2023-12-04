@@ -4,10 +4,6 @@ class OptionCard extends StatelessWidget {
   const OptionCard({super.key, required this.option, required this.color,});
   final String option;
   final Color color;
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Card(

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:quiz_app/Constants/constants.dart';
 
 class NextButton extends StatelessWidget {
@@ -10,12 +10,12 @@ class NextButton extends StatelessWidget {
       height: 50,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: nuetral,
+        color: background,
         borderRadius: BorderRadius.circular(10),),
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: const Text('Next Question',
         style: TextStyle(
-            fontSize: 20),
+            fontSize: 20,color: Colors.white),
         textAlign: TextAlign.center,),
 
     );

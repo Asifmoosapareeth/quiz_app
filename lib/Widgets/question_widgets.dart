@@ -14,7 +14,7 @@ class QuestionWidget extends StatelessWidget {
       child:Text('${index+1}.  $Question',
         style: const TextStyle(
             fontSize: 20,
-        color: nuetral
+        color: CupertinoColors.black
         ) , ) ,
     );
   }
