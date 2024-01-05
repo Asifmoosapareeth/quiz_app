@@ -37,7 +37,7 @@ class _LoginFireState extends State<LoginFire> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'Quiz App',
                     style: TextStyle(
                       fontSize: 30,
@@ -45,28 +45,28 @@ class _LoginFireState extends State<LoginFire> {
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Username',
                       border: OutlineInputBorder(),
                       prefixIcon: Icon(Icons.person, color: Colors.white),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     controller: usernameController,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   TextField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Password',
                       border: OutlineInputBorder(),
                       prefixIcon: Icon(Icons.lock, color: Colors.white),
                     ),
                     obscureText: true,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     controller: passwordController,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       String email = usernameController.text.trim();
@@ -74,7 +74,7 @@ class _LoginFireState extends State<LoginFire> {
 
                       FirebaseHelper().login(email: email, password: pass).then((result) {
                         if (result == null) {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
                         }
@@ -83,19 +83,19 @@ class _LoginFireState extends State<LoginFire> {
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white, // Button color
                       onPrimary: orangee, // Text color
-                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                     ),
-                    child: Text('Login', style: TextStyle(fontSize: 18)),
+                    child: const Text('Login', style: TextStyle(fontSize: 18)),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegistrationFire()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationFire()));
                     },
                     style: TextButton.styleFrom(
                       primary: Colors.white, // Text color
                     ),
-                    child: Text('Register', style: TextStyle(fontSize: 16)),
+                    child: const Text('Register', style: TextStyle(fontSize: 16)),
                   ),
                 ],
               ),

@@ -59,6 +59,17 @@ class _QuestionPageState extends State<QuestionPage> {
 
     Navigator.pop(context);
   }
+  void skipQuestion(extractedData) {
+    if (index == extractedData.length - 1) {
+      // Handle if it's the last question and you want to do something specific
+    } else {
+      setState(() {
+        index++;
+        ispressed = false;
+        isAlreadySelected = false;
+      });
+    }
+  }
 
   void nextQuestion(int totalQuestion) {
     if (index == totalQuestion - 1) {
@@ -118,7 +129,7 @@ class _QuestionPageState extends State<QuestionPage> {
                       'Mark : $mark',
                       style: const TextStyle(fontSize: 18),
                     ),
-                  )
+                  ),
                 ],
               ),
               body: Container(
@@ -127,6 +138,14 @@ class _QuestionPageState extends State<QuestionPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 20,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(onPressed: ()=>skipQuestion(extractedData),
+                            child: const Text('skip',style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold,color: Colors.green),)),
+                      ],
+                    ),
+                    const SizedBox(height: 15,),
                     QuestionWidget(Question: extractedData[index].title, index: index),
                     const SizedBox(height: 80,),
                     for (int i = 0; i < extractedData[index].options.length; i++)
@@ -141,14 +160,15 @@ class _QuestionPageState extends State<QuestionPage> {
                               : Colors.grey,
                         ),
                       ),
+
                   ],
                 ),
               ),
               floatingActionButton: GestureDetector(
                 onTap: () => nextQuestion(extractedData.length),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: NextButton(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: NextButton(isLastQuestion: index == extractedData.length - 1),
                 ),
               ),
               floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
